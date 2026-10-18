@@ -1,0 +1,58 @@
+go athena
+
+# X mesh: refine near the gate edge at 6.5 nm
+line x loc=0.0000 spac=0.0010
+line x loc=0.0050 spac=0.0003
+line x loc=0.0060 spac=0.0002
+line x loc=0.0065 spac=0.0001
+line x loc=0.0070 spac=0.0001
+line x loc=0.0080 spac=0.0002
+line x loc=0.0100 spac=0.00025
+
+# Y mesh: refine near the silicon surface
+line y loc=0.0000 spac=0.0001
+line y loc=0.0010 spac=0.00015
+line y loc=0.0020 spac=0.00025
+line y loc=0.0050 spac=0.0005
+line y loc=0.0150 spac=0.0015
+line y loc=0.0300 spac=0.0030
+
+# initial silicon structure with <100> orientation
+init silicon c.boron=1.0e14 orientation=100 two.d
+
+#initial oxide thickness
+oxide initial=0.00065
+
+# gate oxidation
+diffus time=0.1 temp=950 dryo2 press=1.00 hcl.pc=3
+
+#extract gateoxide thickness
+extract name="Gateoxide" thickness material="SiO~2" mat.occno=1 x.val=0.009
+
+
+#trial channel boron implant
+implant boron dose=1.0e12 energy=0.5 tilt=0 rotation=0 bca
+
+struct outfile=implantboron.str
+
+# conformal polysilicon deposition: 10 nm
+deposit polysilicon thick=0.010 divisions=10 
+
+## High-k dielectric: 1.6 nm HfO2
+#deposit hfo2 thick=0.0016 divisions=8
+struct outfile=depositpoly.str
+
+# define half gate: retain x=6.5~10 nm
+etch polysilicon left p1.x=0.0055
+
+struct outfile=etchpoly.str
+
+# polysilicon reoxidation: 900 C, 0.6 seconds
+method fermi compress
+diffus time=0.01 temp=900 weto2 press=1.00
+
+
+
+struct outfile=mosfet.str
+
+quit
