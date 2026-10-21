@@ -1,58 +1,99 @@
-go athena
+go victoryprocess simflags="-P 4"
 
-# X mesh: refine near the gate edge at 6.5 nm
-line x loc=0.0000 spac=0.0010
-line x loc=0.0050 spac=0.0003
-line x loc=0.0060 spac=0.0002
-line x loc=0.0065 spac=0.0001
-line x loc=0.0070 spac=0.0001
-line x loc=0.0080 spac=0.0002
-line x loc=0.0100 spac=0.00025
+# Units: um
+# Half structure: X=0~10 nm
+# Silicon depth: 30 nm
+# Gas space above silicon: 30 nm
+INIT material=silicon from=0.000 to=0.010 depth=0.030 \
+     gasheight=0.030 resolution=0.001 \
+     dopants=boron dopingvalues=1.0e14 \
+     flow.dim=2D_XZ
 
-# Y mesh: refine near the silicon surface
-line y loc=0.0000 spac=0.0001
-line y loc=0.0010 spac=0.00015
-line y loc=0.0020 spac=0.00025
-line y loc=0.0050 spac=0.0005
-line y loc=0.0150 spac=0.0015
-line y loc=0.0300 spac=0.0030
+# Lateral mesh
+LINE x location=0.0000 spacing=0.0010
+LINE x location=0.0050 spacing=0.0003
+LINE x location=0.0060 spacing=0.0002
+LINE x location=0.0065 spacing=0.0001
+LINE x location=0.0070 spacing=0.0001
+LINE x location=0.0080 spacing=0.0002
+LINE x location=0.0100 spacing=0.00025
 
-# initial silicon structure with <100> orientation
-init silicon c.boron=1.0e14 orientation=100 two.d
+# Vertical mesh: gas above the surface
+LINE z location=-0.030 spacing=0.0020
+LINE z location=-0.010 spacing=0.0005
 
-#initial oxide thickness
-oxide initial=0.00065
+# Vertical mesh: silicon surface and bulk
+LINE z location=0.0000 spacing=0.0001
+LINE z location=0.0010 spacing=0.00015
+LINE z location=0.0020 spacing=0.00025
+LINE z location=0.0050 spacing=0.0005
+LINE z location=0.0150 spacing=0.0015
+LINE z location=0.0300 spacing=0.0030
 
-# gate oxidation
-diffus time=0.1 temp=950 dryo2 press=1.00 hcl.pc=3
+# Save process state and export a structure for inspection
+SAVE name=initial_silicon
+EXPORT structure=initial_silicon.str
 
-#extract gateoxide thickness
-extract name="Gateoxide" thickness material="SiO~2" mat.occno=1 x.val=0.009
+# SiO2 interfacial layer: 0.5 nm
+DEPOSIT material=oxide thickness=0.0005 conformal
+# Save process state and export structure
+SAVE name=interfacial_oxide
+EXPORT structure=interfacial_oxide.str
 
+# Trial channel boron implantation
+# Dose: cm^-2; energy: keV; angles: degrees
+IMPLANT boron dose=1.0e12 energy=0.5 tilt=0 rotation=0 bca
+#Save provess state
+SAVE name=channel_boron
+EXPORT structure=channel_boron.str
 
-#trial channel boron implant
-implant boron dose=1.0e12 energy=0.5 tilt=0 rotation=0 bca
+# High-k dielectric: 1.6 nm HfO2
+DEPOSIT material=hfo2 thickness=0.0016 conformal
+SAVE name=gate_dielectric_stack
+EXPORT structure=gate_dielectric_stack.str
 
-struct outfile=implantboron.str
+# Polysilicon gate deposition: 10 nm
+DEPOSIT material=polysilicon thickness=0.010 conformal
+SAVE name=poly_gate_deposit
+EXPORT structure=poly_gate_deposit.str
 
-# conformal polysilicon deposition: 10 nm
-deposit polysilicon thick=0.010 divisions=10 
+# Define the 3.5 nm half gate: retain x=6.5~10 nm
+ETCH material=polysilicon thickness=0.010 dry between="0,0.0065"
+SAVE name=poly_gate_etch
+EXPORT structure=poly_gate_etch.str
 
-## High-k dielectric: 1.6 nm HfO2
-#deposit hfo2 thick=0.0016 divisions=8
-struct outfile=depositpoly.str
+# Remove exposed HfO2 outside the gate
+# Retain the 0.5 nm SiO2 screening layer
+ETCH material=hfo2 thickness=0.0016 dry between="0,0.0065"
 
-# define half gate: retain x=6.5~10 nm
-etch polysilicon left p1.x=0.0055
+SAVE name=gate_stack_pattern
+EXPORT structure=gate_stack_pattern.str
 
-struct outfile=etchpoly.str
+# Trial source/drain extension implant
+# Dose: cm^-2; energy: keV
+IMPLANT phosphorus dose=1.0e12 energy=0.05 tilt=0 rotation=0 bca
+SAVE name=extension_implant
+EXPORT structure=extension_implant.str
 
-# polysilicon reoxidation: 900 C, 0.6 seconds
-method fermi compress
-diffus time=0.01 temp=900 weto2 press=1.00
+# Conformal silicon nitride deposition: 3 nm
+DEPOSIT material=nitride thickness=0.0030 conformal
+SAVE name=spacer_deposit
+EXPORT structure=spacer_deposit.str
 
+# Directional etch-back to leave the gate sidewall spacer
+ETCH material=nitride thickness=0.0030 dry
+SAVE name=spacer_etch
+EXPORT structure=spacer_etch.str
 
+# Trial heavy source/drain arsenic implantation
+# Dose: cm^-2; energy: keV
+IMPLANT arsenic dose=1.0e14 energy=0.1 tilt=7 rotation=0 bca
+SAVE name=sd_arsenic_implant
+EXPORT structure=sd_arsenic_implant.str
 
-struct outfile=mosfet.str
+# Trial anneal: 950 C, 1 second, nitrogen ambient
+DIFFUSE time=0.2 seconds temperature=950 
+SAVE name=after_anneal
+EXPORT structure=after_anneal.str
 
-quit
+exit
