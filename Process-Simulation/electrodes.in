@@ -1,0 +1,24 @@
+go victorydevice
+
+MESH infile=nmos_full.str
+
+# Left aluminum contact
+ELECTRODE name=source \
+          x.min=0.0000 x.max=0.0020 \
+          y.min=-0.0010 y.max=0.0000
+
+# Right aluminum contact
+ELECTRODE name=drain \
+          x.min=0.0180 x.max=0.0200 \
+          y.min=-0.0010 y.max=0.0000
+
+# Polysilicon gate top
+ELECTRODE name=gate \
+          x.min=0.0065 x.max=0.0135 \
+          y.min=-0.015 y.max=-0.002
+
+ELECTRODE name=substrate bottom
+
+SAVE outfile=nmos_electrodes.str
+
+quit

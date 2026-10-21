@@ -1,0 +1,12 @@
+# Mirror and generate the device mesh
+go victorymesh
+
+LOAD in=source_contact.str
+
+MIRROR axes="+x"
+
+REMESH conformal
+
+SAVE out=nmos_full.str
+
+exit

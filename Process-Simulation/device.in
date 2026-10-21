@@ -1,0 +1,50 @@
+go victorydevice
+
+MESH infile=nmos_electrodes.str
+
+# Gate dielectric properties
+MATERIAL material=hfo2 permittivity=20
+MATERIAL material=oxide permittivity=3.9
+
+# Gate contact work function
+CONTACT name=gate n.poly
+
+# Initial physical models
+MODELS cvt srh fermi bgn print
+METHOD newton trap
+
+# Equilibrium
+SOLVE init
+SAVE outfile=nmos_equilibrium.str
+
+# Gradually apply drain bias
+SOLVE vdrain=0.001
+SOLVE vdrain=0.01
+SOLVE vdrain=0.05
+
+## Gate sweep: 0~0.8 V, step 0.025 V
+#LOG outfile=nmos_idvg_vd005.log
+#SOLVE name=gate vgate=0.0 vstep=0.025 vfinal=0.8
+#LOG off
+
+# Ramp gate bias from 0 V to -0.8 V
+SOLVE vgate=-0.05
+SOLVE name=gate vstep=-0.05 vfinal=-0.8
+# Record Id-Vg from -0.8 V to +0.8 V
+LOG outfile=nmos_idvg_extended.log
+SOLVE name=gate vgate=-0.8 vstep=0.025 vfinal=0.8
+LOG off
+SAVE outfile=nmos_vg08_vd005.str
+
+# Extract threshold voltage from the low-drain-bias Id-Vg curve
+EXTRACT init infile="nmos_idvg_extended.log"
+
+EXTRACT name="Vt_linear" \
+    (xintercept(maxslope(curve(v."gate",abs(i."drain")))) \
+    - abs(ave(v."drain"))/2.0)
+
+# Minimum subthreshold swing: mV/dec
+EXTRACT name="SS_min_mVdec" \
+    1000.0/slope(maxslope(curve(v."gate",log10(abs(i."drain")))))
+
+quit
