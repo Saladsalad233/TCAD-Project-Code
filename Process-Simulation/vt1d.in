@@ -1,0 +1,336 @@
+# Independent VD quasi-1D MOS auxiliary model, NOT the full MOSFET.
+# Source: user-supplied channel/poly NET doping profiles.
+# Net profiles are reconstructed as effective ionized acceptors/donors.
+# Separate chemical species, compensation, activation and damage are unavailable.
+# Piecewise-constant profile reconstruction, with all source samples retained.
+# Actual SiO2/HfO2 layers retained; uses material-database dielectric parameters.
+# Add any explicit MATERIAL/INTERFACE overrides used in the original VD deck.
+# Criterion: near-surface electron density equals local effective acceptor density.
+# This is a strong-inversion criterion, NOT QUICKMOS conductance-extrapolated Vt.
+# No quantum correction; gate n.poly and Qf=0 are explicit modelling assumptions.
+go victorydevice
+
+MESH
+X.MESH loc=0.0000 spac=0.0005
+X.MESH loc=0.0010 spac=0.0005
+Y.MESH loc=-0.0121 spac=0.000419239029
+Y.MESH loc=-0.011680760971 spac=2.103844e-05
+Y.MESH loc=-0.011659722531 spac=2.103844e-05
+Y.MESH loc=-0.011631103529 spac=2.8619002e-05
+Y.MESH loc=-0.01106080449 spac=2.637784e-05
+Y.MESH loc=-0.01103442665 spac=2.637784e-05
+Y.MESH loc=-0.01050878794 spac=2.431218e-05
+Y.MESH loc=-0.01048447576 spac=2.431218e-05
+Y.MESH loc=-0.01 spac=2.390612e-05
+Y.MESH loc=-0.00997609388 spac=2.390612e-05
+Y.MESH loc=-0.00949970986 spac=2.293965e-05
+Y.MESH loc=-0.00947677021 spac=2.293965e-05
+Y.MESH loc=-0.00901964531 spac=2.201225e-05
+Y.MESH loc=-0.00899763306 spac=2.201225e-05
+Y.MESH loc=-0.00855898867 spac=2.112234e-05
+Y.MESH loc=-0.00853786633 spac=2.112234e-05
+Y.MESH loc=-0.00811695534 spac=2.026842e-05
+Y.MESH loc=-0.00809668692 spac=2.026842e-05
+Y.MESH loc=-0.00769279241 spac=1.944901e-05
+Y.MESH loc=-0.0076733434 spac=1.944901e-05
+Y.MESH loc=-0.00728577741 spac=1.866273e-05
+Y.MESH loc=-0.00726711468 spac=1.866273e-05
+Y.MESH loc=-0.00689521711 spac=1.790824e-05
+Y.MESH loc=-0.00687730887 spac=1.790824e-05
+Y.MESH loc=-0.00652044627 spac=1.718425e-05
+Y.MESH loc=-0.00650326202 spac=1.718425e-05
+Y.MESH loc=-0.00616082657 spac=1.648953e-05
+Y.MESH loc=-0.00614433704 spac=1.648953e-05
+Y.MESH loc=-0.00581574546 spac=1.582289e-05
+Y.MESH loc=-0.00579992257 spac=1.582289e-05
+Y.MESH loc=-0.00548461521 spac=1.518322e-05
+Y.MESH loc=-0.00546943199 spac=1.518322e-05
+Y.MESH loc=-0.00516687179 spac=1.456939e-05
+Y.MESH loc=-0.0051523024 spac=1.456939e-05
+Y.MESH loc=-0.00486197402 spac=1.398038e-05
+Y.MESH loc=-0.00484799364 spac=1.398038e-05
+Y.MESH loc=-0.00456940257 spac=1.341519e-05
+Y.MESH loc=-0.00455598738 spac=1.341519e-05
+Y.MESH loc=-0.00428865912 spac=1.287284e-05
+Y.MESH loc=-0.00427578628 spac=1.287284e-05
+Y.MESH loc=-0.00401926548 spac=1.235242e-05
+Y.MESH loc=-0.00400691306 spac=1.235242e-05
+Y.MESH loc=-0.00376076282 spac=1.185304e-05
+Y.MESH loc=-0.00374890978 spac=1.185304e-05
+Y.MESH loc=-0.00351271083 spac=1.137385e-05
+Y.MESH loc=-0.00350133698 spac=1.137385e-05
+Y.MESH loc=-0.00327468702 spac=1.091403e-05
+Y.MESH loc=-0.00326377299 spac=1.091403e-05
+Y.MESH loc=-0.00304628597 spac=1.04728e-05
+Y.MESH loc=-0.00303581317 spac=1.04728e-05
+Y.MESH loc=-0.00282711865 spac=1.004941e-05
+Y.MESH loc=-0.00281706924 spac=1.004941e-05
+Y.MESH loc=-0.00261681177 spac=9.64313e-06
+Y.MESH loc=-0.00260716864 spac=9.64313e-06
+Y.MESH loc=-0.00241500712 spac=9.25328e-06
+Y.MESH loc=-0.00240575384 spac=9.25328e-06
+Y.MESH loc=-0.00222136097 spac=5.79917e-06
+Y.MESH loc=-0.0022155618 spac=5.79917e-06
+Y.MESH loc=-0.0021 spac=0.0001155618
+Y.MESH loc=-0.0019 spac=0.0002
+Y.MESH loc=-0.0015 spac=0.0004
+Y.MESH loc=-0.001 spac=0.0005
+Y.MESH loc=-0.0005 spac=0.0001
+Y.MESH loc=-0.0004 spac=0.0001
+Y.MESH loc=-0.0003 spac=0.0001
+Y.MESH loc=-0.0002 spac=0.0001
+Y.MESH loc=-0.0001 spac=0.0001
+Y.MESH loc=0 spac=4.83429841e-06
+Y.MESH loc=4.83429841e-06 spac=1.6570159e-07
+Y.MESH loc=5e-06 spac=1.6570159e-07
+Y.MESH loc=0.000101168747 spac=5.122587e-06
+Y.MESH loc=0.000106291334 spac=5.122587e-06
+Y.MESH loc=0.000208370594 spac=5.428067e-06
+Y.MESH loc=0.000213798661 spac=5.428067e-06
+Y.MESH loc=0.000321965318 spac=5.751765e-06
+Y.MESH loc=0.000327717083 spac=5.751765e-06
+Y.MESH loc=0.000442334152 spac=6.094766e-06
+Y.MESH loc=0.000448428918 spac=6.094766e-06
+Y.MESH loc=0.000569881064 spac=6.458222e-06
+Y.MESH loc=0.000576339286 spac=6.458222e-06
+Y.MESH loc=0.000705034112 spac=6.843351e-06
+Y.MESH loc=0.000711877463 spac=6.843351e-06
+Y.MESH loc=0.000848246879 spac=7.251448e-06
+Y.MESH loc=0.000855498327 spac=7.251448e-06
+Y.MESH loc=0.001 spac=7.28341e-06
+Y.MESH loc=0.00100728341 spac=7.28341e-06
+Y.MESH loc=0.00115242198 spac=8.27555e-06
+Y.MESH loc=0.00116069753 spac=8.27555e-06
+Y.MESH loc=0.00132560679 spac=9.40285e-06
+Y.MESH loc=0.00133500964 spac=9.40285e-06
+Y.MESH loc=0.00152238273 spac=1.068369e-05
+Y.MESH loc=0.00153306642 spac=1.068369e-05
+Y.MESH loc=0.00174596336 spac=1.213901e-05
+Y.MESH loc=0.00175810237 spac=1.213901e-05
+Y.MESH loc=0.002 spac=1.235049e-05
+Y.MESH loc=0.00201235049 spac=1.235049e-05
+Y.MESH loc=0.00225846214 spac=1.363604e-05
+Y.MESH loc=0.00227209818 spac=1.363604e-05
+Y.MESH loc=0.00254382749 spac=1.505541e-05
+Y.MESH loc=0.0025588829 spac=1.505541e-05
+Y.MESH loc=0.00285889637 spac=1.662252e-05
+Y.MESH loc=0.00287551889 spac=1.662252e-05
+Y.MESH loc=0.00320676062 spac=1.835275e-05
+Y.MESH loc=0.00322511337 spac=1.835275e-05
+Y.MESH loc=0.00359083389 spac=2.026307e-05
+Y.MESH loc=0.00361109696 spac=2.026307e-05
+Y.MESH loc=0.00401488515 spac=2.237226e-05
+Y.MESH loc=0.00403725741 spac=2.237226e-05
+Y.MESH loc=0.00448307571 spac=2.470097e-05
+Y.MESH loc=0.00450777668 spac=2.470097e-05
+Y.MESH loc=0.005 spac=2.362868e-05
+Y.MESH loc=0.00502362868 spac=2.362868e-05
+Y.MESH loc=0.00549448425 spac=2.637252e-05
+Y.MESH loc=0.00552085677 spac=2.637252e-05
+Y.MESH loc=0.00604638958 spac=2.943498e-05
+Y.MESH loc=0.00607582456 spac=2.943498e-05
+Y.MESH loc=0.00666238391 spac=3.285306e-05
+Y.MESH loc=0.00669523697 spac=3.285306e-05
+Y.MESH loc=0.00734990945 spac=3.666807e-05
+Y.MESH loc=0.00738657752 spac=3.666807e-05
+Y.MESH loc=0.00811727265 spac=4.092608e-05
+Y.MESH loc=0.00815819873 spac=4.092608e-05
+Y.MESH loc=0.00897374449 spac=4.567855e-05
+Y.MESH loc=0.00901942304 spac=4.567855e-05
+Y.MESH loc=0.00992967256 spac=5.098289e-05
+Y.MESH loc=0.00998065545 spac=5.098289e-05
+Y.MESH loc=0.010996606 spac=5.69032e-05
+Y.MESH loc=0.0110535092 spac=5.69032e-05
+Y.MESH loc=0.0121874352 spac=6.3511e-05
+Y.MESH loc=0.0122509462 spac=6.3511e-05
+Y.MESH loc=0.0135165473 spac=7.0886e-05
+Y.MESH loc=0.0135874333 spac=7.0886e-05
+Y.MESH loc=0.015 spac=7.05078e-05
+Y.MESH loc=0.0150705078 spac=7.05078e-05
+Y.MESH loc=0.0164755363 spac=7.91423e-05
+Y.MESH loc=0.0165546786 spac=7.91423e-05
+Y.MESH loc=0.0181317698 spac=8.88343e-05
+Y.MESH loc=0.0182206041 spac=8.88343e-05
+Y.MESH loc=0.0199908291 spac=9.97131e-05
+Y.MESH loc=0.0200905422 spac=9.97131e-05
+Y.MESH loc=0.0220775526 spac=0.0001119241
+Y.MESH loc=0.0221894767 spac=0.0001119241
+Y.MESH loc=0.0244198205 spac=0.0001256306
+Y.MESH loc=0.0245454511 spac=0.0001256306
+Y.MESH loc=0.0270489274 spac=0.0001410155
+Y.MESH loc=0.0271899429 spac=0.0001410155
+Y.MESH loc=0.03 spac=0.0028100571
+
+REGION num=1 material=Silicon y.min=0.0 y.max=0.0300
+REGION num=2 material=SiO2 y.min=-0.0005 y.max=0.0
+REGION num=3 material=HfO2 y.min=-0.0021 y.max=-0.0005
+REGION num=4 material=Polysilicon y.min=-0.0121 y.max=-0.0021
+
+ELECTRODE name=gate top
+ELECTRODE name=substrate bottom
+
+DOPING uniform p.type conc=8.99020231e+17 region=1 y.min=0 y.max=2.417149205e-06
+DOPING uniform p.type conc=8.99796233e+17 region=1 y.min=2.417149205e-06 y.max=5.3001522705e-05
+DOPING uniform p.type conc=9.16031663e+17 region=1 y.min=5.3001522705e-05 y.max=0.0001037300405
+DOPING uniform p.type conc=9.17480385e+17 region=1 y.min=0.0001037300405 y.max=0.000157330964
+DOPING uniform p.type conc=9.47716813e+17 region=1 y.min=0.000157330964 y.max=0.0002110846275
+DOPING uniform p.type conc=9.49809475e+17 region=1 y.min=0.0002110846275 y.max=0.0002678819895
+DOPING uniform p.type conc=9.93601858e+17 region=1 y.min=0.0002678819895 y.max=0.0003248412005
+DOPING uniform p.type conc=9.9622345e+17 region=1 y.min=0.0003248412005 y.max=0.0003850256175
+DOPING uniform p.type conc=1.05124475e+18 region=1 y.min=0.0003850256175 y.max=0.000445381535
+DOPING uniform p.type conc=1.05420835e+18 region=1 y.min=0.000445381535 y.max=0.000509154991
+DOPING uniform p.type conc=1.11655101e+18 region=1 y.min=0.000509154991 y.max=0.000573110175
+DOPING uniform p.type conc=1.11963281e+18 region=1 y.min=0.000573110175 y.max=0.000640686699
+DOPING uniform p.type conc=1.18460584e+18 region=1 y.min=0.000640686699 y.max=0.0007084557875
+DOPING uniform p.type conc=1.18759099e+18 region=1 y.min=0.0007084557875 y.max=0.000780062171
+DOPING uniform p.type conc=1.25071813e+18 region=1 y.min=0.000780062171 y.max=0.000851872603
+DOPING uniform p.type conc=1.25344177e+18 region=1 y.min=0.000851872603 y.max=0.0009277491635
+DOPING uniform p.type conc=1.31125532e+18 region=1 y.min=0.0009277491635 y.max=0.001003641705
+DOPING uniform p.type conc=1.31351553e+18 region=1 y.min=0.001003641705 y.max=0.001079852695
+DOPING uniform p.type conc=1.36151235e+18 region=1 y.min=0.001079852695 y.max=0.001156559755
+DOPING uniform p.type conc=1.36354784e+18 region=1 y.min=0.001156559755 y.max=0.00124315216
+DOPING uniform p.type conc=1.40654841e+18 region=1 y.min=0.00124315216 y.max=0.001330308215
+DOPING uniform p.type conc=1.40828366e+18 region=1 y.min=0.001330308215 y.max=0.001428696185
+DOPING uniform p.type conc=1.44406816e+18 region=1 y.min=0.001428696185 y.max=0.001527724575
+DOPING uniform p.type conc=1.44539876e+18 region=1 y.min=0.001527724575 y.max=0.00163951489
+DOPING uniform p.type conc=1.4715607e+18 region=1 y.min=0.00163951489 y.max=0.001752032865
+DOPING uniform p.type conc=1.47224715e+18 region=1 y.min=0.001752032865 y.max=0.001879051185
+DOPING uniform p.type conc=1.48513723e+18 region=1 y.min=0.001879051185 y.max=0.002006175245
+DOPING uniform p.type conc=1.48486212e+18 region=1 y.min=0.002006175245 y.max=0.002135406315
+DOPING uniform p.type conc=1.48034118e+18 region=1 y.min=0.002135406315 y.max=0.00226528016
+DOPING uniform p.type conc=1.4790238e+18 region=1 y.min=0.00226528016 y.max=0.002407962835
+DOPING uniform p.type conc=1.45553063e+18 region=1 y.min=0.002407962835 y.max=0.002551355195
+DOPING uniform p.type conc=1.45326746e+18 region=1 y.min=0.002551355195 y.max=0.002708889635
+DOPING uniform p.type conc=1.40939691e+18 region=1 y.min=0.002708889635 y.max=0.00286720763
+DOPING uniform p.type conc=1.40630868e+18 region=1 y.min=0.00286720763 y.max=0.003041139755
+DOPING uniform p.type conc=1.33974154e+18 region=1 y.min=0.003041139755 y.max=0.003215936995
+DOPING uniform p.type conc=1.3356949e+18 region=1 y.min=0.003215936995 y.max=0.00340797363
+DOPING uniform p.type conc=1.24626796e+18 region=1 y.min=0.00340797363 y.max=0.003600965425
+DOPING uniform p.type conc=1.2411139e+18 region=1 y.min=0.003600965425 y.max=0.003812991055
+DOPING uniform p.type conc=1.13654438e+18 region=1 y.min=0.003812991055 y.max=0.00402607128
+DOPING uniform p.type conc=1.13090563e+18 region=1 y.min=0.00402607128 y.max=0.00426016656
+DOPING uniform p.type conc=1.02314838e+18 region=1 y.min=0.00426016656 y.max=0.004495426195
+DOPING uniform p.type conc=1.0158708e+18 region=1 y.min=0.004495426195 y.max=0.00475388834
+DOPING uniform p.type conc=8.85250233e+17 region=1 y.min=0.00475388834 y.max=0.00501181434
+DOPING uniform p.type conc=8.7780619e+17 region=1 y.min=0.00501181434 y.max=0.005259056465
+DOPING uniform p.type conc=7.44971362e+17 region=1 y.min=0.005259056465 y.max=0.00550767051
+DOPING uniform p.type conc=7.384505e+17 region=1 y.min=0.00550767051 y.max=0.005783623175
+DOPING uniform p.type conc=6.1426482e+17 region=1 y.min=0.005783623175 y.max=0.00606110707
+DOPING uniform p.type conc=6.09561347e+17 region=1 y.min=0.00606110707 y.max=0.006369104235
+DOPING uniform p.type conc=5.2280932e+17 region=1 y.min=0.006369104235 y.max=0.00667881044
+DOPING uniform p.type conc=5.17545287e+17 region=1 y.min=0.00667881044 y.max=0.00702257321
+DOPING uniform p.type conc=4.28445306e+17 region=1 y.min=0.00702257321 y.max=0.007368243485
+DOPING uniform p.type conc=4.22572532e+17 region=1 y.min=0.007368243485 y.max=0.007751925085
+DOPING uniform p.type conc=3.23467996e+17 region=1 y.min=0.007751925085 y.max=0.00813773569
+DOPING uniform p.type conc=3.19045677e+17 region=1 y.min=0.00813773569 y.max=0.00856597161
+DOPING uniform p.type conc=2.40722524e+17 region=1 y.min=0.00856597161 y.max=0.008996583765
+DOPING uniform p.type conc=2.36836988e+17 region=1 y.min=0.008996583765 y.max=0.0094745478
+DOPING uniform p.type conc=1.71808621e+17 region=1 y.min=0.0094745478 y.max=0.009955164005
+DOPING uniform p.type conc=1.69357653e+17 region=1 y.min=0.009955164005 y.max=0.010488630725
+DOPING uniform p.type conc=1.29521159e+17 region=1 y.min=0.010488630725 y.max=0.0110250576
+DOPING uniform p.type conc=1.27512812e+17 region=1 y.min=0.0110250576 y.max=0.0116204722
+DOPING uniform p.type conc=9.38297578e+16 region=1 y.min=0.0116204722 y.max=0.0122191907
+DOPING uniform p.type conc=9.18036349e+16 region=1 y.min=0.0122191907 y.max=0.01288374675
+DOPING uniform p.type conc=5.68235218e+16 region=1 y.min=0.01288374675 y.max=0.0135519903
+DOPING uniform p.type conc=5.56920385e+16 region=1 y.min=0.0135519903 y.max=0.01429371665
+DOPING uniform p.type conc=3.7090646e+16 region=1 y.min=0.01429371665 y.max=0.0150352539
+DOPING uniform p.type conc=3.63646301e+16 region=1 y.min=0.0150352539 y.max=0.01577302205
+DOPING uniform p.type conc=2.54010241e+16 region=1 y.min=0.01577302205 y.max=0.01651510745
+DOPING uniform p.type conc=2.44414169e+16 region=1 y.min=0.01651510745 y.max=0.0173432242
+DOPING uniform p.type conc=1.09140997e+16 region=1 y.min=0.0173432242 y.max=0.01817618695
+DOPING uniform p.type conc=1.04528329e+16 region=1 y.min=0.01817618695 y.max=0.0191057166
+DOPING uniform p.type conc=4.47644062e+15 region=1 y.min=0.0191057166 y.max=0.02004068565
+DOPING uniform p.type conc=4.41116736e+15 region=1 y.min=0.02004068565 y.max=0.0210840474
+DOPING uniform p.type conc=3.48090161e+15 region=1 y.min=0.0210840474 y.max=0.02213351465
+DOPING uniform p.type conc=3.3936943e+15 region=1 y.min=0.02213351465 y.max=0.0233046486
+DOPING uniform p.type conc=2.1175763e+15 region=1 y.min=0.0233046486 y.max=0.0244826358
+DOPING uniform p.type conc=2.1141367e+15 region=1 y.min=0.0244826358 y.max=0.02579718925
+DOPING uniform p.type conc=1.661455e+15 region=1 y.min=0.02579718925 y.max=0.02711943515
+DOPING uniform p.type conc=1.55769814e+15 region=1 y.min=0.02711943515 y.max=0.02859497145
+DOPING uniform p.type conc=6.50153949e+14 region=1 y.min=0.02859497145 y.max=0.03
+
+DOPING uniform n.type conc=7.00330617e+19 region=4 y.min=-0.0121 y.max=-0.0118903804855
+DOPING uniform n.type conc=6.99170199e+19 region=4 y.min=-0.0118903804855 y.max=-0.011670241751
+DOPING uniform n.type conc=6.99112018e+19 region=4 y.min=-0.011670241751 y.max=-0.01164541303
+DOPING uniform n.type conc=6.98783375e+19 region=4 y.min=-0.01164541303 y.max=-0.0113459540095
+DOPING uniform n.type conc=6.92266508e+19 region=4 y.min=-0.0113459540095 y.max=-0.01104761557
+DOPING uniform n.type conc=6.91708735e+19 region=4 y.min=-0.01104761557 y.max=-0.010771607295
+DOPING uniform n.type conc=6.80687062e+19 region=4 y.min=-0.010771607295 y.max=-0.01049663185
+DOPING uniform n.type conc=6.79956271e+19 region=4 y.min=-0.01049663185 y.max=-0.01024223788
+DOPING uniform n.type conc=6.65556079e+19 region=4 y.min=-0.01024223788 y.max=-0.00998804694
+DOPING uniform n.type conc=6.64633889e+19 region=4 y.min=-0.00998804694 y.max=-0.00973790187
+DOPING uniform n.type conc=6.46521265e+19 region=4 y.min=-0.00973790187 y.max=-0.009488240035
+DOPING uniform n.type conc=6.45446879e+19 region=4 y.min=-0.009488240035 y.max=-0.00924820776
+DOPING uniform n.type conc=6.24405681e+19 region=4 y.min=-0.00924820776 y.max=-0.009008639185
+DOPING uniform n.type conc=6.23200596e+19 region=4 y.min=-0.009008639185 y.max=-0.008778310865
+DOPING uniform n.type conc=5.99665632e+19 region=4 y.min=-0.008778310865 y.max=-0.0085484275
+DOPING uniform n.type conc=5.98349511e+19 region=4 y.min=-0.0085484275 y.max=-0.008327410835
+DOPING uniform n.type conc=5.72716858e+19 region=4 y.min=-0.008327410835 y.max=-0.00810682113
+DOPING uniform n.type conc=5.71307565e+19 region=4 y.min=-0.00810682113 y.max=-0.007894739665
+DOPING uniform n.type conc=5.4393619e+19 region=4 y.min=-0.007894739665 y.max=-0.007683067905
+DOPING uniform n.type conc=5.42449747e+19 region=4 y.min=-0.007683067905 y.max=-0.007479560405
+DOPING uniform n.type conc=5.13661554e+19 region=4 y.min=-0.007479560405 y.max=-0.007276446045
+DOPING uniform n.type conc=5.1211262e+19 region=4 y.min=-0.007276446045 y.max=-0.007081165895
+DOPING uniform n.type conc=4.82202242e+19 region=4 y.min=-0.007081165895 y.max=-0.00688626299
+DOPING uniform n.type conc=4.8060509e+19 region=4 y.min=-0.00688626299 y.max=-0.00669887757
+DOPING uniform n.type conc=4.49858562e+19 region=4 y.min=-0.00669887757 y.max=-0.006511854145
+DOPING uniform n.type conc=4.48225498e+19 region=4 y.min=-0.006511854145 y.max=-0.006332044295
+DOPING uniform n.type conc=4.16891321e+19 region=4 y.min=-0.006332044295 y.max=-0.006152581805
+DOPING uniform n.type conc=4.15226533e+19 region=4 y.min=-0.006152581805 y.max=-0.00598004125
+DOPING uniform n.type conc=3.83403856e+19 region=4 y.min=-0.00598004125 y.max=-0.005807834015
+DOPING uniform n.type conc=3.81557413e+19 region=4 y.min=-0.005807834015 y.max=-0.00564226889
+DOPING uniform n.type conc=3.46562082e+19 region=4 y.min=-0.00564226889 y.max=-0.0054770236
+DOPING uniform n.type conc=3.44537407e+19 region=4 y.min=-0.0054770236 y.max=-0.00531815189
+DOPING uniform n.type conc=3.06569194e+19 region=4 y.min=-0.00531815189 y.max=-0.005159587095
+DOPING uniform n.type conc=3.04407385e+19 region=4 y.min=-0.005159587095 y.max=-0.00500713821
+DOPING uniform n.type conc=2.64370338e+19 region=4 y.min=-0.00500713821 y.max=-0.00485498383
+DOPING uniform n.type conc=2.62120109e+19 region=4 y.min=-0.00485498383 y.max=-0.004708698105
+DOPING uniform n.type conc=2.21066854e+19 region=4 y.min=-0.004708698105 y.max=-0.004562694975
+DOPING uniform n.type conc=2.18801666e+19 region=4 y.min=-0.004562694975 y.max=-0.00442232325
+DOPING uniform n.type conc=1.78204044e+19 region=4 y.min=-0.00442232325 y.max=-0.0042822227
+DOPING uniform n.type conc=1.76034097e+19 region=4 y.min=-0.0042822227 y.max=-0.00414752588
+DOPING uniform n.type conc=1.37902183e+19 region=4 y.min=-0.00414752588 y.max=-0.00401308927
+DOPING uniform n.type conc=1.35960898e+19 region=4 y.min=-0.00401308927 y.max=-0.00388383794
+DOPING uniform n.type conc=1.02499728e+19 region=4 y.min=-0.00388383794 y.max=-0.0037548363
+DOPING uniform n.type conc=1.00901031e+19 region=4 y.min=-0.0037548363 y.max=-0.003630810305
+DOPING uniform n.type conc=7.3765531e+18 region=4 y.min=-0.003630810305 y.max=-0.003507023905
+DOPING uniform n.type conc=7.25590237e+18 region=4 y.min=-0.003507023905 y.max=-0.003388012
+DOPING uniform n.type conc=5.2236596e+18 region=4 y.min=-0.003388012 y.max=-0.003269230005
+DOPING uniform n.type conc=5.13969421e+18 region=4 y.min=-0.003269230005 y.max=-0.00315502948
+DOPING uniform n.type conc=3.72134838e+18 region=4 y.min=-0.00315502948 y.max=-0.00304104957
+DOPING uniform n.type conc=3.66704638e+18 region=4 y.min=-0.00304104957 y.max=-0.00293146591
+DOPING uniform n.type conc=2.73592688e+18 region=4 y.min=-0.00293146591 y.max=-0.002822093945
+DOPING uniform n.type conc=2.70344815e+18 region=4 y.min=-0.002822093945 y.max=-0.002716940505
+DOPING uniform n.type conc=2.13092451e+18 region=4 y.min=-0.002716940505 y.max=-0.002611990205
+DOPING uniform n.type conc=2.112371e+18 region=4 y.min=-0.002611990205 y.max=-0.00251108788
+DOPING uniform n.type conc=1.77455943e+18 region=4 y.min=-0.00251108788 y.max=-0.00241038048
+DOPING uniform n.type conc=1.76604273e+18 region=4 y.min=-0.00241038048 y.max=-0.002313557405
+DOPING uniform n.type conc=1.6046011e+18 region=4 y.min=-0.002313557405 y.max=-0.002218461385
+DOPING uniform n.type conc=1.60318785e+18 region=4 y.min=-0.002218461385 y.max=-0.0021577809
+DOPING uniform n.type conc=1.57528403e+18 region=4 y.min=-0.0021577809 y.max=-0.0021
+
+CONTACT name=gate n.poly
+INTERFACE qf=0
+MODELS cvt srh fermi bgn temp=300 print
+METHOD newton trap
+
+PROBE name="ns" n.conc x=0.0005 y=5e-06
+PROBE name="ps" p.conc x=0.0005 y=5e-06
+
+SOLVE init
+SAVE outfile=mos1d_equilibrium.str
+SOLVE vgate=-0.05
+SOLVE name=gate vstep=-0.05 vfinal=-1.0
+
+LOG outfile=mos1d_gate_sweep.log
+SOLVE name=gate vgate=-1.0 vstep=0.005 vfinal=0.20
+LOG off
+SAVE outfile=mos1d_vg1.str
+
+# ns probe is 0.005 nm inside Si to avoid dielectric-side interface sampling.
+# Local reconstructed acceptor density: 8.99824159008e+17 cm-3.
+EXTRACT init infile="mos1d_gate_sweep.log"
+EXTRACT name="Vt_1D_ns_equals_NA_V" x.val from curve(v."gate",probe."ns") where y.val=8.99824159008e+17
+EXTRACT name="ns_vs_vg" curve(v."gate",probe."ns") outfile="mos1d_ns_vs_vg.dat"
+
+quit
