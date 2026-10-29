@@ -1,0 +1,27 @@
+# Generate mesh for the doped structure before annealing
+#GO victorymesh simflags="-P 4"
+
+#LOAD in=Step08_Doping
+
+#REMESH delaunay
+
+#REFINE max.size=0.015
+#REFINE max.interface.size=0.002 max.interface.distance=0.05
+
+
+#SAVE out=Step08_Doping_Mesh.str
+
+# Generate mesh for the structure after annealing
+GO victorymesh simflags="-P 4"
+
+LOAD in=Step09_Diffusion
+
+REMESH delaunay
+
+REFINE max.size=0.015
+REFINE max.interface.size=0.002 max.interface.distance=0.05
+REFINE max.junction.size=0.002 max.junction.distance=0.05
+
+SAVE out=Step09_Diffusion_Mesh.str
+
+QUIT

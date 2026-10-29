@@ -1,0 +1,17 @@
+# Export gate-center XZ cross section
+GO victorymesh simflags="-P 4"
+
+LOAD in=Process_Extract_Mesh.str
+
+CUTPLANE axis=y offset=0.045 out=Gate_XZ
+
+SAVE in=Gate_XZ out=Gate_XZ.str
+
+# Export fin-center YZ cross section
+LOAD in=Process_Extract_Mesh.str
+
+CUTPLANE axis=x offset=0.075 out=Fin_YZ
+
+SAVE in=Fin_YZ out=Fin_YZ.str
+
+QUIT

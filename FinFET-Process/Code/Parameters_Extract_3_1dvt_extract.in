@@ -1,0 +1,28 @@
+# Read gate-center XZ cross section
+EXTRACT init infile="Gate_XZ.str"
+
+# Silicon arsenic profile
+EXTRACT name="Si_As_Vertical" \
+ curve(depth, impurity="Arsenic" material="Silicon" \
+ mat.occno=1 x.val=0.075) \
+ outfile="Si_As_Vertical.dat"
+
+# Silicon boron profile
+EXTRACT name="Si_B_Vertical" \
+ curve(depth, impurity="Boron" material="Silicon" \
+ mat.occno=1 x.val=0.075) \
+ outfile="Si_B_Vertical.dat"
+
+# Polysilicon arsenic profile
+EXTRACT name="Poly_As_Vertical" \
+ curve(depth, impurity="Arsenic" material="Polysilicon" \
+ mat.occno=1 x.val=0.075) \
+ outfile="Poly_As_Vertical.dat"
+
+# Polysilicon boron profile
+EXTRACT name="Poly_B_Vertical" \
+ curve(depth, impurity="Boron" material="Polysilicon" \
+ mat.occno=1 x.val=0.075) \
+ outfile="Poly_B_Vertical.dat"
+
+QUIT

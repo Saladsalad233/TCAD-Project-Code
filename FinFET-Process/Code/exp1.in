@@ -1,0 +1,143 @@
+GO victoryprocess simflags="-P 4"
+
+#----------------------Initialize silicon substrate----------------------------
+INIT silicon from="0,0" to="0.15,0.09" depth=0.45 gasheight=1 flow.dim=3D
+
+# X mesh coordinates
+LINE x location=0
+LINE x location=0.0575
+LINE x location=0.0595
+LINE x location=0.05975
+LINE x location=0.06
+LINE x location=0.09
+LINE x location=0.09025
+LINE x location=0.0905
+LINE x location=0.0925
+LINE x location=0.15
+
+# Y mesh coordinates
+LINE y location=0
+LINE y location=0.025
+LINE y location=0.035
+LINE y location=0.038
+LINE y location=0.04
+LINE y location=0.05
+LINE y location=0.052
+LINE y location=0.055
+LINE y location=0.065
+LINE y location=0.09
+
+# Z mesh coordinates
+LINE z location=-1
+LINE z location=-0.0825
+LINE z location=-0.0525
+LINE z location=-0.0505
+LINE z location=-0.05025
+LINE z location=-0.05
+LINE z location=-0.0025
+LINE z location=-0.0005
+LINE z location=-0.00025
+LINE z location=0
+LINE z location=0.25
+LINE z location=0.4
+LINE z location=0.45
+
+# Save and inspect the initialized structure
+SAVE name=Step01_BulkSi
+
+# Define active fin mask
+SPECIFYMASKPOLY maskname=ACTIVE \
+ p1="0.06,0" p2="0.09,0" \
+ p3="0.09,0.09" p4="0.06,0.09"
+
+#-----------------------Fin----------------------------------
+# Create fin
+ETCH material=silicon angle=85 thickness=0.25 mask=ACTIVE min
+
+# Fill isolation oxide
+DEPOSIT oxide thick=0 max
+
+# Form silicon above isolation oxide
+MASK mask=ACTIVE reverse
+DEPOSIT material=silicon thickness=0.05 min
+STRIP resist
+
+# Save the fin and isolation structure
+SAVE name=Step02_Fin
+
+#-----------------------------Gate------------------------------
+# Define gate mask
+SPECIFYMASKPOLY maskname=POLY \
+ p1="0,0.035" p2="0.15,0.035" \
+ p3="0.15,0.055" p4="0,0.055"
+
+# Deposit gate dielectric
+DEPOSIT material=oxynitride thick=0.0005 conformal
+DEPOSIT material=HfO2 thick=0.002 conformal
+
+# Save gate dielectric structure
+SAVE name=Step03_GateDielectric
+
+# Deposit and pattern polysilicon gate
+DEPOSIT material=polysilicon thick=0.03 max
+ETCH material=polysilicon mask=POLY thick=0.1 max
+
+# Save gate structure
+SAVE name=Step04_Gate
+
+#-----------------------Spacers-----------------------
+# Form oxide spacers
+DEPOSIT material=oxide thick=0.01 conformal
+ETCH material=oxide thick=0.01 max
+
+# Save spacer structure
+SAVE name=Step05_Spacer
+
+# Define the protected gate and spacer region
+SPECIFYMASKPOLY maskname=SD_ETCH \
+ p1="0,0.025" p2="0.15,0.025" \
+ p3="0.15,0.065" p4="0,0.065"
+
+#------------------------S-D-Windows-------------------------
+# Remove dielectric in source and drain regions
+ETCH material=oxide mask=SD_ETCH max
+ETCH material=HfO2 mask=SD_ETCH max
+ETCH material=oxynitride mask=SD_ETCH max
+
+# Save source and drain openings
+SAVE name=Step06_SDOpening
+
+#-----------------------S-D-doping--------------------
+# Define source contact region
+SPECIFYMASKPOLY maskname=CONT \
+ p1="0.05,0" p2="0.10,0" \
+ p3="0.10,0.025" p4="0.05,0.025"
+
+# Add drain contact region
+SPECIFYMASKPOLY maskname=CONT \
+ p1="0.05,0.065" p2="0.10,0.065" \
+ p3="0.10,0.09" p4="0.05,0.09" add
+
+# Form source and drain polysilicon contacts
+MASK mask=CONT reverse
+DEPOSIT material=polysilicon thick=0.06 min
+STRIP material=barrier
+
+# Save contact structure
+SAVE name=Step07_SDContact
+
+# Assign doping
+DOPING polysilicon arsenic=1e20
+DOPING silicon boron=5e14
+
+# Save structure before diffusion
+SAVE name=Step08_Doping
+
+# Thermal diffusion
+DIFFUSE time=0.12 temp=1050
+
+# Save structure after diffusion
+SAVE name=Step09_Diffusion
+
+
+QUIT

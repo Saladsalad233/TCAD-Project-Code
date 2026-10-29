@@ -1,0 +1,61 @@
+# Read gate-center XZ cross section
+EXTRACT init infile="Gate_XZ.str"
+
+# Polysilicon thickness above the fin
+EXTRACT name="Gate_Top_Thickness_A" thickness \
+ material="Polysilicon" mat.occno=1 x.val=0.075
+
+# Oxynitride thickness above the fin
+EXTRACT name="SiON_Top_Thickness_A" thickness \
+ material="Oxynitride" mat.occno=1 x.val=0.075
+
+# HfO2 thickness above the fin
+EXTRACT name="HfO2_Top_Thickness_A" thickness \
+ material="HfO2" mat.occno=1 x.val=0.075
+
+# Read fin-center YZ cross section
+EXTRACT init infile="Fin_YZ.str"
+
+# Gate length along the original Y direction
+# The horizontal line is above the silicon fin, inside the gate cap
+EXTRACT name="Gate_Length_A" thickness \
+ material="Polysilicon" mat.occno=1 y.val=-0.07
+
+# Read gate-center XZ cross section
+EXTRACT init infile="Gate_XZ.str"
+
+# Peak arsenic concentration along the gate-center vertical line
+EXTRACT name="Gate_As_Peak_cm3" max.conc \
+ impurity="Arsenic" material="Polysilicon" \
+ mat.occno=1 x.val=0.075
+
+# Read fin-center YZ cross section
+EXTRACT init infile="Fin_YZ.str"
+
+# Source junction extraction
+EXTRACT name="Source_Xj" xj \
+ material="Silicon" mat.occno=1 \
+ x.val=0.0125 junc.occno=1
+
+# Drain junction extraction
+EXTRACT name="Drain_Xj" xj \
+ material="Silicon" mat.occno=1 \
+ x.val=0.0775 junc.occno=1
+
+
+
+# Read fin-center YZ cross section
+EXTRACT init infile="Fin_YZ.str"
+
+# Local source sheet resistance
+EXTRACT name="Source_Sheet_Resistance" sheet.res \
+ material="Silicon" mat.occno=1 \
+ x.val=0.0125 region.occno=1
+
+# Local drain sheet resistance
+EXTRACT name="Drain_Sheet_Resistance" sheet.res \
+ material="Silicon" mat.occno=1 \
+ x.val=0.0775 region.occno=1
+
+QUIT
+

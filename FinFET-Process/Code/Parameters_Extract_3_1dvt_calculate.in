@@ -1,0 +1,130 @@
+# Quasi-1D auxiliary MOS model
+# This is not the full three-gate FinFET
+GO victorydevice simflags="-P 4"
+
+# Mesh
+MESH
+
+X.MESH loc=0 spac=0.0005
+X.MESH loc=0.001 spac=0.0005
+
+Y.MESH loc=-0.0325 spac=0.005
+Y.MESH loc=-0.0025 spac=0.0001
+Y.MESH loc=-0.0005 spac=0.00005
+Y.MESH loc=0 spac=0.00002
+Y.MESH loc=0.000118003911 spac=0.00002
+Y.MESH loc=0.001 spac=0.00005
+Y.MESH loc=0.002 spac=0.0001
+Y.MESH loc=0.005 spac=0.0002
+Y.MESH loc=0.015 spac=0.0005
+Y.MESH loc=0.025 spac=0.001
+Y.MESH loc=0.05 spac=0.002
+Y.MESH loc=0.1 spac=0.005
+Y.MESH loc=0.25 spac=0.01
+Y.MESH loc=0.5 spac=0.01
+
+# Gate stack
+REGION num=1 material=Silicon \
+ y.min=0 y.max=0.5
+
+REGION num=2 material=Oxynitride \
+ y.min=-0.0005 y.max=0
+
+REGION num=3 material=HfO2 \
+ y.min=-0.0025 y.max=-0.0005
+
+REGION num=4 material=Polysilicon \
+ y.min=-0.0325 y.max=-0.0025
+
+# Electrodes
+ELECTRODE name=gate top
+ELECTRODE name=substrate bottom
+
+# Effective net acceptor profile
+# Chemical compensation is approximated as ionized net doping
+DOPING uniform p.type region=1 conc=3.81805675e14 \
+ y.min=0 y.max=0.0000362479079
+
+DOPING uniform p.type region=1 conc=3.82089859e14 \
+ y.min=0.0000362479079 y.max=0.0000952498634
+
+DOPING uniform p.type region=1 conc=3.82223027e14 \
+ y.min=0.0000952498634 y.max=0.0004551536265
+
+DOPING uniform p.type region=1 conc=2.65541870e14 \
+ y.min=0.0004551536265 y.max=0.000877453197
+
+DOPING uniform p.type region=1 conc=2.19943681e14 \
+ y.min=0.000877453197 y.max=0.001138097021
+
+DOPING uniform p.type region=1 conc=3.04642890e14 \
+ y.min=0.001138097021 y.max=0.001351531165
+
+DOPING uniform p.type region=1 conc=1.38396248e14 \
+ y.min=0.001351531165 y.max=0.00204592509
+
+DOPING uniform p.type region=1 conc=2.80910866e14 \
+ y.min=0.00204592509 y.max=0.00748618387
+
+DOPING uniform p.type region=1 conc=4.88e14 \
+ y.min=0.00748618387 y.max=0.025
+
+DOPING uniform p.type region=1 conc=5e14 \
+ y.min=0.025 y.max=0.5
+
+# Approximate polysilicon donor concentration
+DOPING uniform n.type region=4 conc=9.65e19
+
+# Gate work function consistent with the original device deck
+CONTACT name=gate workfunc=4.65
+
+# Zero fixed interface charge assumption
+INTERFACE qf=0
+
+# Physical models
+MODELS cvt srh fermi temp=300 print
+
+METHOD newton trap
+
+# Probe slightly inside silicon
+# Local effective acceptor concentration: 3.82223027e14 cm^-3
+PROBE name="ns" n.conc \
+ x=0.0005 y=0.000118003911
+
+PROBE name="ps" p.conc \
+ x=0.0005 y=0.000118003911
+
+# Equilibrium
+SOLVE init
+SAVE outfile=MOS1D_Equilibrium.str
+
+# Move to accumulation
+SOLVE vgate=-0.05
+SOLVE name=gate vstep=-0.05 vfinal=-1.0
+
+# Gate-voltage sweep
+LOG outfile=MOS1D_GateSweep.log
+
+SOLVE name=gate vgate=-1.0 vstep=0.005 vfinal=1.5
+
+LOG off
+
+SAVE outfile=MOS1D_Final.str
+
+# Strong-inversion criterion at the probe location
+EXTRACT init infile="MOS1D_GateSweep.log"
+
+EXTRACT name="Vt_1D_Trial_V" \
+ x.val from curve(v."gate",probe."ns") \
+ where y.val=3.82223027e14
+
+# Export carrier-density curves
+EXTRACT name="ns_vs_Vg" \
+ curve(v."gate",probe."ns") \
+ outfile="MOS1D_ns_vs_Vg.dat"
+
+EXTRACT name="ps_vs_Vg" \
+ curve(v."gate",probe."ps") \
+ outfile="MOS1D_ps_vs_Vg.dat"
+
+QUIT

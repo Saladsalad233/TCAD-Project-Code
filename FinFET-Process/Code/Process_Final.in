@@ -1,0 +1,45 @@
+# Restore the completed process simulation
+GO victoryprocess simflags="-P 4"
+
+LOAD name=Step09_Diffusion
+
+# Define gate electrode mask
+SPECIFYMASKPOLY maskname=ELEC_GATE electrode=gate \
+ p1="0.01,0.04" p2="0.03,0.04" \
+ p3="0.03,0.05" p4="0.01,0.05"
+
+# Define source electrode mask
+SPECIFYMASKPOLY maskname=ELEC_SOURCE electrode=source \
+ p1="0.065,0.005" p2="0.085,0.005" \
+ p3="0.085,0.015" p4="0.065,0.015"
+
+# Define drain electrode mask
+SPECIFYMASKPOLY maskname=ELEC_DRAIN electrode=drain \
+ p1="0.065,0.075" p2="0.085,0.075" \
+ p3="0.085,0.085" p4="0.065,0.085"
+
+# Assign electrodes to polysilicon
+ELECTRODES mask=ELEC_GATE material=polysilicon
+ELECTRODES mask=ELEC_SOURCE material=polysilicon
+ELECTRODES mask=ELEC_DRAIN material=polysilicon
+
+# Assign substrate electrode
+ELECTRODES substrate
+
+# Save structure with electrodes
+SAVE name=Process_Final
+
+# Generate mesh for structural measurements
+GO victorymesh simflags="-P 4"
+
+LOAD in=Process_Final
+
+REMESH delaunay
+
+REFINE max.size=0.015
+REFINE max.interface.size=0.001 max.interface.distance=0.01
+
+# Save structure for parameter inspection
+SAVE out=Process_Extract_Mesh.str
+
+QUIT

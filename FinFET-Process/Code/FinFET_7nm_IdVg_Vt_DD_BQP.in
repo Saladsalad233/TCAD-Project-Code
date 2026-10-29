@@ -1,0 +1,88 @@
+# Drift Diffusion: Id-Vg
+GO victorydevice simflags="-P 4"
+
+# Load final device mesh
+MESH infile=Process_Extract_Mesh.str
+
+# Gate contact
+CONTACT name=gate workfunction=4.65
+
+# Physical models
+MODEL consrh cvt fermi print
+
+# Numerical methods
+METHOD pam.gmres maxtrap=6 itlimit=150 \
+ dvmax=1.0 norm.scaling.local
+
+# Initialize solution
+SOLVE init
+SOLVE prev
+
+# Ramp drain voltage to 0.05 V
+SOLVE vdrain=0.01
+SOLVE vstep=0.01 vfinal=0.05 name=drain previous
+
+# Record Id-Vg
+LOG outfile=FinFET_7nm_IdVg_DD.log
+
+SOLVE vgate=0.0
+SOLVE vgate=0.01
+SOLVE vgate=0.05 vstep=0.05 vfinal=1 name=gate previous
+
+LOG off
+
+SAVE outfile=FinFET_7nm_DD_Final.str
+
+
+# Bohm Quantum Potential: Id-Vg
+GO victorydevice simflags="-P 4"
+
+# Load the same device mesh
+MESH infile=Process_Extract_Mesh.str
+
+# Gate contact
+CONTACT name=gate workfunction=4.65
+
+# Physical models
+MODEL consrh cvt fermi print
+MODEL bqp.n bqp.ngamma=1.4 bqp.nalpha=0.3
+
+# Numerical methods
+METHOD pam.gmres maxtrap=6 itlimit=150 \
+ dvmax=1.0 norm.scaling.local
+
+# Initialize quantum-corrected solution
+SOLVE init bqp.sc
+SOLVE prev
+
+# Ramp drain voltage to 0.05 V
+SOLVE vdrain=0.01
+SOLVE vstep=0.01 vfinal=0.05 name=drain previous
+
+# Record Id-Vg
+LOG outfile=FinFET_7nm_IdVg_BQP.log
+
+SOLVE vgate=0.0
+SOLVE vgate=0.01
+SOLVE vgate=0.05 vstep=0.05 vfinal=1 name=gate previous
+
+LOG off
+
+SAVE outfile=FinFET_7nm_BQP_Final.str
+
+
+# Extract DD threshold voltage
+EXTRACT init infile="FinFET_7nm_IdVg_DD.log"
+
+EXTRACT name="Vt_DD_Linear_V" \
+ (xintercept(maxslope(curve(abs(v."gate"),abs(i."drain")))) \
+ -0.025)
+
+# Extract BQP threshold voltage
+EXTRACT init infile="FinFET_7nm_IdVg_BQP.log"
+
+EXTRACT name="Vt_BQP_Linear_V" \
+ (xintercept(maxslope(curve(abs(v."gate"),abs(i."drain")))) \
+ -0.025)
+
+QUIT

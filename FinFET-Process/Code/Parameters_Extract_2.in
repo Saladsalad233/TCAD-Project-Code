@@ -1,0 +1,17 @@
+# Read fin-center YZ cross section
+EXTRACT init infile="Fin_YZ.str"
+
+# Arsenic profile along source-channel-drain
+EXTRACT name="Fin_Top_As_Profile" \
+ curve(depth, impurity="Arsenic" material="Silicon" \
+ mat.occno=1 y.val=-0.045) \
+ outfile="Fin_Top_As_Profile.dat"
+
+# Boron profile along the same line
+EXTRACT name="Fin_Top_B_Profile" \
+ curve(depth, impurity="Boron" material="Silicon" \
+ mat.occno=1 y.val=-0.045) \
+ outfile="Fin_Top_B_Profile.dat"
+
+
+QUIT
